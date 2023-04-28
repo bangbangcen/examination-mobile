@@ -1,0 +1,378 @@
+<template>
+	<view class="pages">
+		<!-- #ifndef H5 -->
+		<statusBar></statusBar>
+		<!-- #endif -->
+
+		<!-- 搜索功能 -->
+		<view class="uni-search-box">
+			<uni-search-bar v-model="keyword" ref="searchBar" radius="100" cancelButton="none" disabled
+				:placeholder="inputPlaceholder" />
+			<view class="cover-search-bar" @click="searchClick"></view>
+		</view>
+
+		<!-- 基于 uni-list 的页面布局 field="user_id.nickname"-->
+		<uni-list class="uni-list" :border="false" :style="{height:listHight}">
+
+			<!-- 作用于app端nvue页面的下拉加载 -->
+			<!-- #ifdef APP-NVUE -->
+			<refreshBox @refresh="refresh" :loading="loading"></refreshBox>
+			<!-- #endif -->
+
+			<!-- 列表渲染 -->
+			<uni-list-item :to="'/pages/list/detail?id='+item._id+'&title='+item.title" v-for="(item,index) in centers"
+				:key="index">
+				<!-- 				通过header插槽定义列表左侧图片
+				<template v-slot:header>
+					<image class="avatar" :src="item.avatar" mode="aspectFill"></image>
+				</template> -->
+				<!-- 通过body插槽定义布局 -->
+				<template v-slot:body>
+					<view class="main">
+						<view class="left">
+							<text class="title">{{item.name}}</text>
+							<view class="info">
+								<text class="author">{{item.district + item.address}}</text>
+								<!-- 							<uni-dateformat class="last_modify_date" :date="item.last_modify_date" format="yyyy-MM-dd"
+									:threshold="[60000, 2592000000]" /> -->
+							</view>							
+						</view>
+						<view class="right">
+							3.4km
+						</view>
+					</view>
+				</template>
+			</uni-list-item>
+			<!-- 加载状态：上拉加载更多，加载中，没有更多数据了，加载错误 -->
+			<!-- #ifdef APP-PLUS -->
+			<uni-list-item>
+				<template v-slot:body>
+					<!-- #endif -->
+					<uni-load-state @networkResume="refresh" :state="{data,pagination,hasMore, loading, error}"
+						@loadMore="loadMore">
+					</uni-load-state>
+					<!-- #ifdef APP-PLUS -->
+				</template>
+			</uni-list-item>
+			<!-- #endif -->
+		</uni-list>
+
+	</view>
+</template>
+
+<script>
+	let cdbRef;
+	import statusBar from "@/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-status-bar";
+	import $axios from '../../utils/axios/index.js';
+	import Gps from '@/uni_modules/json-gps/js_sdk/gps.js';
+	const gps = new Gps(),
+		db = uniCloud.database();
+
+	export default {
+		components: {
+			statusBar
+		},
+		computed: {
+			inputPlaceholder(e) {
+				if (uni.getStorageSync('CURRENT_LANG') == "en") {
+					return 'Please enter the search content'
+				} else {
+					return '请输入搜索内容'
+				}
+			},
+			colList() {
+				return [
+					1
+					// db.collection('opendb-news-articles').where(this.where).field('avatar,title,last_modify_date,user_id').getTemp(),
+					// db.collection('uni-id-users').field('_id,nickname').getTemp()
+				]
+			}
+		},
+		data() {
+			return {
+				where: '"article_status" == 1',
+				keyword: "",
+				showRefresh: false,
+				listHight: 0,
+				centers: [{
+						title: "bangbagn"
+					},
+					{
+						title: "fdsf"
+					}
+				]
+			}
+		},
+		watch: {
+			keyword(keyword, oldValue) {
+				let where = '"article_status" == 1 '
+				if (keyword) {
+					this.where = where + `&& /${keyword}/.test(title)`;
+				} else {
+					this.where = where;
+				}
+			}
+		},
+		methods: {
+			// // 使用promise 判断地理位置是否授权
+			// authorizedPositioningPromise() {
+			// 	return new Promise((resolve, reject) => {
+			// 		uni.getSystemInfo({
+			// 			success({
+			// 				locationEnabled,
+			// 				locationAuthorized
+			// 			}) {
+			// 				// locationEnabled 判断手机定位服务是否开启
+			// 				// locationAuthorized 判断定位服务是否允许微信授权
+			// 				if (!locationEnabled && !locationAuthorized) {
+			// 					// GPS未开启 与 GPS未给微信授权定位服务
+			// 					reject("GPSnotOpen");
+			// 				} else if (locationEnabled && !locationAuthorized) {
+			// 					// GPS已开启 与 GPS未给微信授权定位服务
+			// 					reject("GPSauthorization");
+			// 				} else if (locationEnabled && locationAuthorized) {
+			// 					/* 
+			// 						GPS已开启 与 GPS已给微信授权定位服务
+			// 						判断微信小程序位置信息是否开启
+			// 					*/
+			// 					uni.authorize({
+			// 						scope: "scope.userLocation",
+			// 						success() {
+			// 							// 微信小程序位置信息已开启
+			// 							uni.getLocation({
+			// 								success({
+			// 									latitude,
+			// 									longitude
+			// 								}) {
+			// 									// latitude; 纬度
+			// 									// longitude; 经度
+			// 									resolve({
+			// 										latitude,
+			// 										longitude
+			// 									});
+			// 								}
+			// 							});
+			// 						},
+			// 						fail() {
+			// 							// 微信小程序位置信息未开启
+			// 							reject("weixinPositionNotOpen");
+			// 						}
+			// 					})
+			// 				}
+			// 			},
+			// 			fail(err) {
+			// 				let reg = /request:fail/;
+			// 				if (reg.test(err.errMsg)) {
+			// 					// 无网络
+			// 					reject("noNetWork");
+			// 				} else {
+			// 					// 请求超时'
+			// 					reject("requestTimeOut");
+			// 				}
+			// 			}
+			// 		})
+			// 	});
+			// },
+			// // 判断地理位置是否授权
+			// authorizedPositioning(callBack = () => {}) {
+			// 	uni.getSystemInfo({ // 获取系统信息
+			// 		success(res) {
+			// 			let locationEnabled = res.locationEnabled; //判断手机定位服务是否开启
+			// 			let locationAuthorized = res.locationAuthorized; //判断定位服务是否允许微信授权
+			// 			if (locationEnabled == false || locationAuthorized == false) {
+			// 				// GPS 未授权
+			// 				callBack("GPSunauthorized");
+			// 			} else {
+			// 				// GPS 已授权 判断微信定位是否授权
+			// 				uni.authorize({
+			// 					scope: 'scope.userLocation',
+			// 					success() {
+			// 						// GPS已授权 微信定位已授权
+			// 						uni.getLocation({
+			// 							type: 'gcj02',
+			// 							success({
+			// 								latitude,
+			// 								longitude
+			// 							}) {
+			// 								// latitude; 纬度
+			// 								// longitude; 经度
+			// 								callBack("Authorized", {
+			// 									latitude,
+			// 									longitude
+			// 								});
+			// 							}
+			// 						});
+			// 					},
+			// 					fail() {
+			// 						// GPS已授权 微信定位未授权
+			// 						callBack("WENXINunauthorized");
+			// 						uni.showModal({
+			// 							title: '未打开小程序定位',
+			// 							content: '找不到您的位置，请开启定位',
+			// 							confirmText: '开启定位',
+			// 							showCancel: false,
+			// 							success: (res) => {
+			// 								if (res.confirm) {
+			// 									uni.openSetting(); // 打开地图权限设置
+			// 								}
+			// 							}
+			// 						});
+			// 					}
+			// 				});
+			// 			}
+			// 		}
+			// 	})
+			// }
+		},
+		async onReady() {
+			this.centers = await $axios.get('center/list', {
+				params: {
+					search: this.keyword,
+				},
+			});
+			console.log(this.centers)
+			// this.authorizedPositioning();
+			// #ifdef APP-NVUE
+			/* 可用窗口高度 - 搜索框高 - 状态栏高 */
+			this.listHight = uni.getSystemInfoSync().windowHeight - uni.getSystemInfoSync().statusBarHeight - 50 +
+				'px';
+			// #endif
+			// #ifndef APP-NVUE
+			this.listHight = 'auto'
+			// #endif
+			cdbRef = this.$refs.udb
+		},
+		async onShow() {
+			this.keyword = getApp().globalData.searchText
+			getApp().globalData.searchText = ''
+			//这里仅演示如何，在onShow生命周期获取设备位置，并在设备或者应用没有权限时自动引导。设置完毕自动重新获取。
+			//你可以基于他做自己的业务，比如：根据距离由近到远排序列表数据等
+			// uni.showLoading({
+			// 	title:"获取定位中"
+			// });
+			//默认h5端不获取定位
+			// #ifndef H5
+			let location = await gps.getLocation({
+				geocode: true
+			})
+			// console.log(location);
+			// #endif
+			// if(location){
+			// 	uni.showToast({
+			// 		title: JSON.stringify(location),
+			// 		icon: 'none'
+			// 	});
+			// }
+			// uni.hideLoading()
+		},
+		methods: {
+			searchClick(e) { //点击搜索框
+				uni.hideKeyboard();
+				uni.navigateTo({
+					url: '/pages/list/search/search',
+					animationType: 'fade-in'
+				});
+			},
+			retry() {
+				this.refresh()
+			},
+			refresh() {
+				cdbRef.loadData({
+					clear: true
+				}, () => {
+					uni.stopPullDownRefresh()
+					// #ifdef APP-NVUE
+					this.showRefresh = false
+					// #endif
+					console.log('end');
+				})
+				console.log('refresh');
+			},
+			loadMore() {
+				cdbRef.loadMore()
+			},
+			onqueryerror(e) {
+				console.error(e);
+			},
+			onpullingdown(e) {
+				console.log(e);
+				this.showRefresh = true
+				if (e.pullingDistance > 100) {
+					this.refresh()
+				}
+			}
+		},
+		// #ifndef APP-NVUE
+		onPullDownRefresh() {
+			this.refresh()
+		},
+		onReachBottom() {
+			this.loadMore()
+		}
+		// #endif
+	}
+</script>
+
+<style lang="scss" scoped>
+	/* #ifndef APP-NVUE */
+	view {
+		display: flex;
+		box-sizing: border-box;
+		flex-direction: column;
+	}
+
+	/* #endif */
+	.pages {
+		background-color: #FFFFFF;
+	}
+
+	.avatar {
+		width: 200rpx;
+		height: 200rpx;
+		margin-right: 10rpx;
+	}
+
+	.main {
+		justify-content: space-between;
+		flex: 1;
+	}
+
+	.title {
+		font-size: 16px;
+	}
+
+	.info {
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.author,
+	.last_modify_date {
+		font-size: 14px;
+		color: #999999;
+	}
+
+	.uni-search-box {
+		background-color: #FFFFFF;
+		position: sticky;
+		height: 50px;
+		top: 0;
+		left: 0;
+		/* #ifndef APP-PLUS */
+		z-index: 9;
+		/* #endif */
+		/* #ifdef MP-WEIXIN */
+		width: 580rpx;
+		/* #endif */
+	}
+
+	.cover-search-bar {
+		height: 50px;
+		position: relative;
+		top: -50px;
+		margin-bottom: -50px;
+		/* #ifndef APP-NVUE */
+		z-index: 999;
+		/* #endif */
+	}
+</style>

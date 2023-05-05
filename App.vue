@@ -51,6 +51,11 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	@import 'uview-ui/theme.scss';
 	/*每个页面公共css */
+	body {
+		font-size: 12px;
+		font-weight: 100;
+	}
 </style>

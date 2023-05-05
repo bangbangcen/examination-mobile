@@ -1,6 +1,6 @@
 {
 	"pages": [{
-			"path": "pages/list/list",
+			"path": "pages/list/package-list",
 			"style": {
 				// #ifndef APP-PLUS
 				"enablePullDownRefresh": true,
@@ -104,7 +104,34 @@
 			}
 		}
 		// #endif
-	],
+	    ,{
+            "path" : "pages/list/appointment/appointment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/list/package-list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/list/package-list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"subPackages": [{
 			"root": "uni_modules/uni-feedback",
 			"pages": [{

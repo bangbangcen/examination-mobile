@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<view class="top-bar">
+<!-- 		<view class="top-bar">
 			<u-search class="search" placeholder="请输入套餐名称" v-model="keyword" height="24"></u-search>
-		</view>
+		</view> -->
 		<view class="context">
 			<u-swiper class="swiper" :list="imageLinks" height="160" key-name="image" mode="dot"
 				img-mode="scaleToFill"></u-swiper>
@@ -34,12 +34,15 @@
 				</view>
 			</view>
 			<view class="package-area">
-				<view class="package-title">热门体检套餐</view>
+				<view class="package-title">
+					<span class="left">热门体检套餐</span>
+					<span class="right">查看全部 ></span>
+				</view>
 				<view class="package-card" v-for="(item) in packages">
 					<image class="package-image" src="https://img95.699pic.com/photo/50121/4634.jpg_wh300.jpg"></image>
 					<view class="card-info">
 						<view class="package-name">{{ item.name }}</view>
-						<view class="applicable">适合人群:{{ item.applicableGroup }}</view>
+						<span class="applicable">{{ item.applicableGroup }}</span>
 						<view class="price">￥{{ item.price }}</view>
 					</view>
 				</view>
@@ -102,7 +105,7 @@
 	.area-bar {
 		display: flex;
 		justify-content: space-between;
-		margin: 20px auto;
+		margin: 20px auto 50rpx auto;
 
 		.group-button {
 			height: 190rpx;
@@ -144,60 +147,80 @@
 	.introduction {
 		display: flex;
 		justify-content: space-around;
-		margin-bottom: 30rpx;
+		margin-bottom: 40rpx;
 		
 		.introduction-item {
-			background-image: url('https://ts1.cn.mm.bing.net/th/id/R-C.77a6a34830aa3efa5810cefc4a5f0156?rik=TTb0ZeBPwuK1AQ&riu=http%3a%2f%2fwww.kuaipng.com%2fUploads%2fpic%2fw%2f2019%2f04-14%2f62846%2fwater_62846_698_841.84_.png&ehk=xKfbJXPhCX28bOhvHCFZzJV4UUXaXkaAc5%2f47%2ffU95U%3d&risl=&pid=ImgRaw&r=0');
+			width: 30%;
+			background-image: url('../../static/instruction-bg.png');
 			background-size: cover;
-			opacity: 40%;
+			opacity: 50%;
 			text-align: center;
 			
 			.title {
-				margin-bottom: 10rpx;
-				font-size: 34rpx;
+				margin-bottom: 16rpx;
+				font-size: 30rpx;
 				font-weight: 500;
 			}
 			
 			.text {
 				font-size: 24rpx;
-				color: $uni-text-color-grey;
+				color: $uni-text-color;
 			}
 		}
 	}
 
 	.package-title {
-		font-weight: 600;
-		color: $u-content-color;
-		font-size: 16px;
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+		
+		.left {
+			font-weight: 600;
+			color: $u-content-color;
+			font-size: 16px;			
+		}
+
+		.right {
+			color: $uni-text-color-grey;
+			font-size: 14px;
+		}
 	}
 
 	.package-card {
 		display: flex;
 		height: 200rpx;
-		margin: 20px auto;
-		background-color: #a0cfff;
+		margin: 4px auto 0 auto;
 		border-radius: 18rpx;
 
 		.package-image {
 			width: 200rpx;
 			height: 150rpx;
-			border-radius: 6px;
+			border-radius: 4px;
 		}
 
 		.card-info {
 			.package-name {
 				margin: 0 0 6px 10px;
 				font-weight: 500;
-				color: #2e2e2e;
+				font-size: 18px;
+				color: $uni-text-color; 
 			}
 
 			.applicable {
+				display: inline-block;
+				font-size: 12px;
+				font-weight: 500;
 				margin-left: 10px;
+				padding: 2px 4px;
 				color: #7b7b7b;
+				background-color: #F3F2F7;
 			}
 
 			.price {
+				margin-top: 10px;
 				margin-left: 10px;
+				font-weight: 500;
+				font-size: 16px;
 				color: #ffc001;
 			}
 		}

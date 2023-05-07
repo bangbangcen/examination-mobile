@@ -58,4 +58,10 @@
 		font-size: 12px;
 		font-weight: 100;
 	}
+	
+	.uni-page-head__title {
+		font-size: 18px !important;
+		font-weight: 500 !important;
+		color: #bb8c00;
+	}
 </style>

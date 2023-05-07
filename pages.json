@@ -128,6 +128,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/list/package-list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"subPackages": [{
 			"root": "uni_modules/uni-feedback",
@@ -259,8 +268,8 @@
 	"tabBar": {
 		"color": "#37393b",
 		"selectedColor": "#FDAC00",
-		"borderStyle": "black",
-		"backgroundColor": "#FFFFFF",
+		"borderStyle": "white",
+		"backgroundColor": "#fff7e7",
 		"list": [{
 			"pagePath": "pages/list/home",
 			"iconPath": "static/tabbar/home.png",

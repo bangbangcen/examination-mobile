@@ -11,7 +11,7 @@
 					<u-icon name="man-add-fill" size="54" color="#FDAC00" class="group-icon"></u-icon>
 					<view class="group-button-text">团检入口</view>
 				</view>
-				<view class="person-button">
+				<view class="person-button" @click="goToPackageList()">
 					<u-icon name="account" size="54" color="#9198CF" class="person-icon"></u-icon>
 					<view class="person-button-text">个人预约</view>
 				</view>
@@ -73,6 +73,12 @@
 		methods: {
 			async getPackages() {
 				this.packages = await $axios.get('package/list');
+			},
+			goToPackageList() {
+				uni.navigateTo({
+					url: '/pages/list/package-list',
+					animationType: 'fade-in'
+				});
 			}
 		},
 		async onReady() {

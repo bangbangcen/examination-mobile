@@ -263,19 +263,24 @@
 		"backgroundColor": "#FFFFFF",
 		"list": [{
 			"pagePath": "pages/list/home",
-			"iconPath": "static/tabbar/list.png",
-			"selectedIconPath": "static/tabbar/list_active.png",
+			"iconPath": "static/tabbar/home.png",
+			"selectedIconPath": "static/tabbar/home-active.png",
 			"text": "首页"
 		}, {
 			"pagePath": "pages/grid/grid",
-			"iconPath": "static/tabbar/grid.png",
-			"selectedIconPath": "static/tabbar/grid_active.png",
-			"text": "体检进度"
+			"iconPath": "static/tabbar/progress.png",
+			"selectedIconPath": "static/tabbar/progress-active.png",
+			"text": "进度"
 		}, {
 			"pagePath": "pages/ucenter/ucenter",
-			"iconPath": "static/tabbar/me.png",
-			"selectedIconPath": "static/tabbar/me_active.png",
-			"text": "个人中心"
+			"iconPath": "static/tabbar/report.png",
+			"selectedIconPath": "static/tabbar/report-active.png",
+			"text": "报告"
+		}, {
+			"pagePath": "pages/ucenter/ucenter",
+			"iconPath": "static/tabbar/my.png",
+			"selectedIconPath": "static/tabbar/my-active.png",
+			"text": "设置"
 		}]
 	},
 	"uniIdRouter": {

@@ -5,13 +5,15 @@ import uView from 'uview-ui'
 import uButton from './node_modules/uview-ui/components/u-button/u-button.vue';
 
 // #ifndef VUE3
-import Vue from 'vue'
+import Vue from 'vue';
+import store from './store';
 Vue.config.productionTip = false;
 Vue.use(uView);
 // Vue.component("u-button", uButton);
 App.mpType = 'app'
 const app = new Vue({
 	i18n,
+	store,
 	...App
 });
 

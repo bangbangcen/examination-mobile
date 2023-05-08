@@ -6,10 +6,10 @@
 			}
 		},
 		{
-			"path": "pages/grid/grid",
+			"path": "pages/list/package-detail",
 			"style": {
 				//#ifndef MP
-				"navigationStyle": "custom"
+				"navigationBarTitleText": ""
 				//#endif
 			}
 		}, {
@@ -101,15 +101,6 @@
 			}
 		}
 		// #endif
-	    ,{
-            "path" : "pages/list/appointment/appointment",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
         ,{
             "path" : "pages/list/home",
             "style" :                                                                                    
@@ -130,6 +121,24 @@
         }
         ,{
             "path" : "pages/list/package-list",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/list/appointment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/list/center-list",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",

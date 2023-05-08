@@ -3,7 +3,7 @@
 		<view class="top-area">
 			<image class="package-image" src="https://img95.699pic.com/photo/50121/4634.jpg_wh300.jpg"></image>
 			<view class="info">
-				<view class="title">新时代全面体检</view>
+				<view class="title">{{ $store.packageInfo.name }}</view>
 			</view>
 		</view>
 		<view class="content-area">
@@ -19,13 +19,14 @@
 		</view>
 		<view class="bottom-bar">
 			<view class="price">￥888</view>
-			<view class="button">立即预约</view>
+			<view class="button" @click="goToAppointment()">立即预约</view>
 		</view>
 	</view>
 </template>
 
 <script>
 	import $axios from '../../utils/axios/index.js';
+
 	export default {
 		data() {
 			return {
@@ -36,6 +37,13 @@
 		methods: {
 			async getCategories() {
 				this.categories = await $axios.get(`package/categories?id=${this.id}`);
+			},
+			goToAppointment() {
+				uni.navigateTo({
+					url: `/pages/list/appointment`,
+					animationType: 'fade-in'
+				});
+				this.$store.packageInfo.categories = this.categories;
 			}
 		},
 		onLoad(event) {
@@ -56,8 +64,8 @@
 		background-color: $uni-bg-color-grey;
 
 		.top-area {
-			height: 200px;
 			padding-top: 10px;
+			padding-bottom: 10px;
 			display: flex;
 			background-color: white;
 			

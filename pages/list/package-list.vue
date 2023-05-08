@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view class="package-area">
-				<view class="package-card" v-for="(item) in packages" @click="goToDetail(item.id)">
+				<view class="package-card" v-for="(item) in packages" @click="goToDetail(item)">
 					<image class="package-image" src="https://img95.699pic.com/photo/50121/4634.jpg_wh300.jpg"></image>
 					<view class="card-info">
 						<view class="package-name">{{ item.name }}</view>
@@ -67,11 +67,12 @@
 			async getPackages() {
 				this.packages = await $axios.get('package/list');
 			},
-			goToDetail(id) {
+			goToDetail(item) {
 				uni.navigateTo({
-					url: `/pages/list/package-detail?id=${id}`,
+					url: `/pages/list/package-detail?id=${item.id}`,
 					animationType: 'fade-in'
 				});
+				this.$store.packageInfo = item;
 			}
 		},
 		async onReady() {

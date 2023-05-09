@@ -3,7 +3,7 @@
 		<u-search class="search" placeholder="请输入机构名称" v-model="keyword"></u-search>
 		<view class="center-list">
 			<view class="title">离你最近</view>
-			<view class="center" v-for="(item, index) in centers">
+			<view class="center" v-for="(item, index) in centers" @click="chooseCenter(item)">
 				<img class="icon" src="/static/location.svg" />
 				<view>
 					<view class="name">{{ item.name }}</view>
@@ -23,13 +23,14 @@
 		data() {
 			return {
 				keyword: "",
-				centers: []
+				centers: [],
+				emptyNum: 0,
+				dayNum: 0
 			};
 		},
 		methods: {
 			async getCenters() {
 				this.centers = await $axios.get("center/list");
-				console.log(this.centers)
 			},
 			Rad(d) {
 				return d * Math.PI / 180.0; //经纬度转换成三角函数中度分表形式。
@@ -45,7 +46,16 @@
 				s = Math.round(s * 10000) / 10000; //输出为公里
 				s=s.toFixed(1);
 				return s;
-			}
+			},
+			chooseCenter(item) {
+				this.$store.center = item;
+				console.log(this.$store.center)
+				// uni.navigateBack();
+				uni.navigateTo({
+					url: `/pages/list/appointment`,
+					animationType: 'fade-in'
+				});
+			},
 		},
 		async onReady() {
 			this.getCenters();

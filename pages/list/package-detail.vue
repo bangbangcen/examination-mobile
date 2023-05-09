@@ -1,7 +1,7 @@
 <template>
 	<view class="context">
 		<view class="top-area">
-			<image class="package-image" src="https://img95.699pic.com/photo/50121/4634.jpg_wh300.jpg"></image>
+			<image class="package-image" :src="$store.packageInfo.image"></image>
 			<view class="info">
 				<view class="title">{{ $store.packageInfo.name }}</view>
 			</view>
@@ -18,7 +18,7 @@
 			</view>
 		</view>
 		<view class="bottom-bar">
-			<view class="price">￥888</view>
+			<view class="price">￥{{ $store.packageInfo.price }}</view>
 			<view class="button" @click="goToAppointment()">立即预约</view>
 		</view>
 	</view>
@@ -70,6 +70,7 @@
 			background-color: white;
 			
 			.package-image {
+				margin-left: 20px;
 				width: 280rpx;
 				height: 180rpx;
 				border-radius: 4px;
@@ -146,7 +147,7 @@
 				background-color: #fdc237;
 				height: 30px;
 				line-height: 30px;
-				font-size: 18px;
+				font-size: 14px;
 				color: white;
 				font-weight: 500;
 				border-radius: 4px;

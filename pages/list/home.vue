@@ -42,7 +42,7 @@
 					<image class="package-image" src="https://img95.699pic.com/photo/50121/4634.jpg_wh300.jpg"></image>
 					<view class="card-info">
 						<view class="package-name">{{ item.name }}</view>
-						<span class="applicable">{{ item.applicableGroup }}</span>
+						<span class="applicable">{{ item.tag }}</span>
 						<view class="price">￥{{ item.price }}</view>
 					</view>
 				</view>
@@ -72,7 +72,7 @@
 		},
 		methods: {
 			async getPackages() {
-				this.packages = await $axios.get('package/list');
+				this.packages = await $axios.get('package/list?isHot=true');
 			},
 			goToPackageList() {
 				uni.navigateTo({

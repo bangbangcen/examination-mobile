@@ -3,6 +3,9 @@ import Vuex from 'vuex';
 Vue.use(Vuex); 
 export default new Vuex.Store({ 
     state:{ 
-		packageInfo: null
-	} 
+		packageInfo: null,
+		center: {
+			name: ""
+		}
+	},
 });

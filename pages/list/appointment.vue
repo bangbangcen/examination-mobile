@@ -11,7 +11,24 @@
 		</view>
 		<view class="center-select" @click="chooseLocation()">
 			<view class="title">体检地点</view>
-			<view class="center">请选择 ></view>
+			<view class="center" v-if="!this.$store.center">请选择 ></view>
+			<view class="center" v-if="this.$store.center">{{ this.$store.center.name }}</view>
+		</view>
+		<view class="date-select">
+			<view class="current-time">
+				{{ new Date().getFullYear() }}年{{ new Date().getMonth() + 1 }}月
+			</view>
+			<view class="calendar">
+				<view class="item dark">一</view>
+				<view class="item dark">二</view>
+				<view class="item dark">三</view>
+				<view class="item dark">四</view>
+				<view class="item dark">五</view>
+				<view class="item dark">六</view>
+				<view class="item dark">日</view>
+				<view v-for="(item) in greyDateList" class="item">{{ item }}</view>
+				<view v-for="(item) in darkDateList" class="item dark">{{ item }}</view>
+			</view>
 		</view>
 		<view class="bottom-bar">
 			<view class="button">提交订单</view>
@@ -34,6 +51,11 @@
 						label: '湖'
 					}
 				],
+				emptyNum: 0,
+				dayNum: 0,
+				dateList: [],
+				greyDateList: [],
+				darkDateList: []
 			};
 		},
 		methods: {
@@ -46,7 +68,25 @@
 					url: `/pages/list/center-list`,
 					animationType: 'fade-in'
 				});
+			},
+			calEmptyNum() {
+				var date = new Date(),
+					y = date.getFullYear(),
+					m = date.getMonth();
+				var firstDay = new Date(y, m, 1);
+				var lastDay = new Date(y, m + 1, 0);
+				this.emptyNum = firstDay.getDay() - 1;
+				this.dayNum = lastDay.getDate();
+				this.dateList = [...new Array(this.emptyNum, -1)];
+				for (let i = 0; i < this.dayNum; i++) {
+					this.dateList[i + this.emptyNum] = i + 1;
+				}
+				this.greyDateList = this.dateList.slice(0, new Date().getDate());
+				this.darkDateList = this.dateList.slice(new Date().getDate());
 			}
+		},
+		onReady() {
+			this.calEmptyNum();
 		}
 	}
 </script>
@@ -88,12 +128,12 @@
 			background-color: white;
 			color: $uni-text-color;
 			padding: 14px 10px;
-			
+
 			.select {
 				color: $uni-text-color-grey;
 			}
 		}
-		
+
 		.center-select {
 			display: flex;
 			justify-content: space-between;
@@ -104,12 +144,48 @@
 			background-color: white;
 			color: $uni-text-color;
 			padding: 14px 10px;
-			
+
 			.center {
 				color: $uni-text-color-grey;
 			}
 		}
-		
+
+		.date-select {
+			width: 96%;
+			margin: 0 auto;
+			padding-top: 10px;
+			background-color: white;
+			
+			.current-time {
+				text-align: center;
+				font-size: 16px;
+				color: $uni-text-color;
+				font-weight: 500;
+			}
+			.calendar {
+				display: flex;
+				flex-wrap: wrap;
+				width: 94%;
+				margin: 0 auto;
+
+				.item {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					font-size: 16px;
+					font-weight: 500;
+					color: $uni-text-color-disable;
+					height: 50px;
+					width: 14%;
+					// background-color: #fdc237;
+				}
+				
+				.dark {
+					color: $uni-text-color;
+				}
+			}
+		}
+
 		.bottom-bar {
 			display: flex;
 			justify-content: center;
@@ -119,7 +195,7 @@
 			background-color: white;
 			height: 54px;
 			width: 100%;
-			
+
 			.button {
 				width: 70%;
 				margin-right: 20px;

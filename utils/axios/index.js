@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const config = {
 	baseURL: 'http://127.0.0.1:3000/',
-	changeOrigin: true
+	changeOrigin: true,
 };
 
 const $axios = axios.create(config);

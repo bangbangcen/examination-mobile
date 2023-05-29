@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/login",
+    "pages/home/home",
+    "pages/home/package-list",
+    "pages/home/package-detail",
+    "pages/home/appointment",
+    "pages/home/center-list",
+    "pages/order/order-list",
+    "pages/order/report-detail",
+    "pages/ucenter/ucenter",
+    "pages/ucenter/examinee-list",
+    "pages/ucenter/examinee-detail",
+    "pages/guide/guide"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-starter",
+    "navigationBarBackgroundColor": "#f9eed4",
+    "backgroundColor": "#F8F8F8",
+    "enablePullDownRefresh": false,
+    "rpxCalcMaxDeviceWidth": 375,
+    "rpxCalcBaseDeviceWidth": 375
+  },
+  "tabBar": {
+    "color": "#37393b",
+    "selectedColor": "#FDAC00",
+    "borderStyle": "white",
+    "backgroundColor": "#fff7e7",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/guide/guide",
+        "iconPath": "static/tabbar/progress.png",
+        "selectedIconPath": "static/tabbar/progress-active.png",
+        "text": "导检"
+      },
+      {
+        "pagePath": "pages/order/order-list",
+        "iconPath": "static/tabbar/report.png",
+        "selectedIconPath": "static/tabbar/report-active.png",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/ucenter/ucenter",
+        "iconPath": "static/tabbar/my.png",
+        "selectedIconPath": "static/tabbar/my-active.png",
+        "text": "设置"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

@@ -1,21 +1,22 @@
 <template>
 	<view class="center">
-		<uni-sign-in ref="signIn"></uni-sign-in>
-		<view class="userInfo" @click.capture="toUserInfo">
-			<cloud-image width="150rpx" height="150rpx" v-if="hasLogin&&userInfo.avatar_file&&userInfo.avatar_file.url" :src="userInfo.avatar_file.url"></cloud-image>
-			
-			<view v-else class="defaultAvatarUrl">
-				<uni-icons color="#ffffff" size="50" type="person-filled" />
+		<!-- <uni-sign-in ref="signIn"></uni-sign-in> -->
+		<view class="userInfo">
+			<!-- <cloud-image width="150rpx" height="150rpx" v-if="hasLogin&&userInfo.avatar_file&&userInfo.avatar_file.url" :src="userInfo.avatar_file.url"></cloud-image> -->
+			<view class="icon-circle">
+				<uni-icons class="icon" color="#f1b500" size="40" type="person-filled" />
 			</view>
+<!-- 			<view v-else class="defaultAvatarUrl">
+				
+			</view> -->
 			
 			<view class="logo-title">
-				<text class="uer-name" v-if="hasLogin">{{userInfo.nickname||userInfo.username||userInfo.mobile}}</text>
-				<text class="uer-name" v-else>{{$t('mine.notLogged')}}</text>
+				<text class="uer-name">路人甲</text>
 			</view>
 		</view>
 		<uni-grid class="grid" :column="4" :showBorder="false" :square="true">
 			<uni-grid-item class="item" v-for="(item,index) in gridList" @click.native="tapGrid(index)" :key="index">
-				<uni-icons class="icon" color="#007AFF" :type="item.icon" size="26"></uni-icons>
+				<uni-icons class="icon" color="#f1b500" :type="item.icon" size="26"></uni-icons>
 				<text class="text">{{item.text}}</text>
 			</uni-grid-item>
 		</uni-grid>
@@ -60,19 +61,19 @@
 		data() {
 			return {
 				gridList: [{
-						"text": this.$t('mine.showText'),
+						"text": "聊天",
 						"icon": "chat"
 					},
 					{
-						"text": this.$t('mine.showText'),
+						"text": "上传",
 						"icon": "cloud-upload"
 					},
 					{
-						"text": this.$t('mine.showText'),
+						"text": "体检人",
 						"icon": "contact"
 					},
 					{
-						"text": this.$t('mine.showText'),
+						"text": "下载",
 						"icon": "download"
 					}
 				],
@@ -92,13 +93,13 @@
 						},
 						// #ifdef APP-PLUS
 						{
-							"title": this.$t('mine.toEvaluate'),
+							"title": "浏览历史",
 							"event": 'gotoMarket',
 							"icon": "star"
 						},
 						//#endif
 						{
-							"title":this.$t('mine.readArticles'),
+							"title": "浏览历史",
 							"to": '/pages/ucenter/read-news-log/read-news-log',
 							"icon": "flag"
 						},
@@ -121,8 +122,8 @@
 						"to": '/uni_modules/uni-feedback/pages/opendb-feedback/opendb-feedback',
 						"icon": "help"
 					}, {
-						"title": this.$t('mine.settings'),
-						"to": '/pages/ucenter/settings/settings',
+						"title": "退出登录",
+						"to": '/pages/login',
 						"icon": "gear"
 					}],
 					// #ifdef APP-PLUS
@@ -175,6 +176,11 @@
 			}
 		},
 		methods: {
+			exit() {
+				uni.navigateTo({
+					url: '/pages/login'
+				})
+			},
 			toSettings() {
 				uni.navigateTo({
 					url: "/pages/ucenter/settings/settings"
@@ -212,11 +218,11 @@
 				})
 			},
 			tapGrid(index) {
-				uni.showToast({
-					// title: '你点击了，第' + (index + 1) + '个',
-					title: this.$t('mine.clicked') + " " + (index + 1) ,
-					icon: 'none'
-				});
+				if (index === 2) {
+					uni.navigateTo({
+						url: './examinee-list'
+					})
+				}
 			},
 			/**
 			 * 去应用市场评分
@@ -371,9 +377,24 @@
 	.userInfo {
 		// padding: 20rpx;
 		padding-top: 60px;
-		background-image: url(../../static/uni-center/headers.png);
+		background-image: url("https://img.51miz.com/Photo/2017/06/06/11/P432669_2c75c928a0bb1cbb7173c31527d50ad1.jpg");
+		opacity: 70%;
 		flex-direction: column;
 		align-items: center;
+		
+		.icon-circle {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 60px;
+			width: 60px;
+			background-color: #e7e7e7;
+			border-radius: 30px;
+			
+			.icon {
+				
+			}
+		}
 	}
 	.defaultAvatarUrl{
 		width: 150rpx;
@@ -447,7 +468,7 @@
 	}
 
 	.item-footer-text {
-		color: #999;
+		color: #dedede;
 		font-size: 24rpx;
 		padding-right: 10rpx;
 	}
